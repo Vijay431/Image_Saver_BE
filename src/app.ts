@@ -4,17 +4,20 @@ import cors from 'cors';
 import bodyParser from "body-parser";
 import mongoose from 'mongoose';
 
-import { Routes } from './assets/Routes/routes';
+import { AuthRoute } from './assets/Routes/auth.route';
+import { ImageRoute } from './assets/Routes/image.route';
 
 class App {
   public app: express.Application;
-  public route: Routes = new Routes();
+  public authroute: AuthRoute = new AuthRoute();
+  public imageRoute: ImageRoute = new ImageRoute();
 
   constructor() {
     this.app = express();
     this.dbConnection();
     this.config();
-    this.route.routes(this.app);
+    this.authroute.routes(this.app);
+    this.imageRoute.routes(this.app);
   }
 
   private dbConnection():any {
