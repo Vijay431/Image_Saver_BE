@@ -21,9 +21,11 @@ class App {
   }
 
   private dbConnection():any {
-    mongoose.connect(process.env.DB_URL, {useUnifiedTopology: true, useNewUrlParser: true})
-    .then((res: any) => { return console.log('DB Connected Successfully!') })
-    .catch((err:any) => { return err })
+    let DB_URL = "mongodb+srv://vijay431:qb4HlceRhCxNbu7K@crud1-hvcos.mongodb.net/imagesaver?retryWrites=true&w=majority";
+    mongoose.Promise = global.Promise;
+    mongoose.connect(DB_URL, {useUnifiedTopology: true, useNewUrlParser: true})
+    .then((res:any) => console.log('DB Connected Successfully!'))
+    .catch((err:any) => {throw err})
   }
 
   private config():void {
