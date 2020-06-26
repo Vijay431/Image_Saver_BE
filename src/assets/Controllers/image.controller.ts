@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongodb from 'mongodb';
 import fs from 'fs';
 import {Request, Response, NextFunction} from 'express';
 
@@ -23,7 +24,7 @@ export class ImageController{
       id: req.body.id,
       caption: req.body.caption,
       image: {
-        imgdata: fs.readFileSync(`./uploads/${req.file.filename}`),
+        imgdata: fs.readFileSync(`./src/public/uploads/${req.file.filename}`),
         contentType: req.file.mimetype
       }
     }
@@ -31,14 +32,15 @@ export class ImageController{
 
     newImage.save((err:any, image:any) => {
       if(err) return res.status(500).json({error: 'Uh-Oh! Something went Wrong!'});
-      if(Object.keys(image).length != 0){
-        return res.status(200).json({message: 'success'});
-      }
+      if(Object.keys(image).length != 0) return res.status(200).json({message: 'success'});
       res.status(200).json({message: 'failure'});
     })
   }
 
   public deleteImage(req:Request, res:Response, next:NextFunction) {
-    res.status(200).send('DELETE IMAGES')
+    Image.deleteOne({_id: new mongodb.ObjectId(req.body.id)}, (err:any) => {
+      if(err) return res.status(500).json({error: 'Uh-Oh! Something went Wrong!'});
+      res.status(200).json({message: 'success'});
+    })
   }
 }

@@ -6,17 +6,16 @@ import { ImageController } from '../Controllers/image.controller';
 
 const storage = multer.diskStorage({
   destination: function(req:Request, file:any, cb:any){
+    let path:String;
     const readdir = function(){
-      if(fs.existsSync('./uploads/')){
-        return './uploads/'
+      if(fs.existsSync('./src/public/uploads/')){
+        return './src/public/uploads/'
       }
       else{
-        let fileflag = false;
-        fs.mkdir('./uploads/', (err:any) => {
-          if(err) return fileflag = false;
-          return fileflag = true;
-        })
-        if(fileflag) return './uploads/'
+        fs.mkdir('./src/public/uploads/', (err:any) => {
+          if(err) throw err;
+        });
+        return './src/public/uploads/'
       }
     }
     cb(null, readdir());
